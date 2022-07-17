@@ -37,8 +37,9 @@ public:
 		head = new Cell(X, Y);
 
 	}
-
+	
 	// moving head in given direction
+	// TODO: add logic that forbids reversing in place
 	void moveHead(int direction) {
 		int newX = head->x;
 		int newY = head->y;
@@ -125,6 +126,7 @@ public:
 
 					
 // The board on which the game is played
+// TODO: Resizing the board, Add walls for visibility
 class Board {
 public:
 	int size =10 ;
@@ -147,25 +149,31 @@ public:
 
 
 
-
+// Interface for the entrypoit application to interact with the program
+/*
+TODO:
+	- Add deconstructor
+	- Make apple unable to spawn on snake(or leave it like this it works quite fine)
+*/  
 class Engine {
 public:
 
-	
 	Board* board;
 	Snake* snake;
 
+	int score;
 	int direction;		// direction of next move
 	int apple[2];		// position of the apple
 	
-
 	Engine() 
 	{
 		srand(time(NULL));
 
+
 		snake = new Snake(rand() % 10, rand() % 10);
 		board = new Board;
 		direction = VK_UP;
+		score = 0;
 
 		apple[0] = rand() % 10;
 		apple[1] = rand() % 10;
@@ -206,7 +214,7 @@ public:
 		
 
 
-	// Update state of the matrix to new data
+	//  Move the snake and update, check the logic and update state of the matrix to new data
 	int update()
 	{
 		int* blank = NULL;
@@ -222,6 +230,7 @@ public:
 			}
 		case 1:
 			{
+			score++;
 			putApple();
 			break;
 			}
@@ -239,7 +248,7 @@ public:
 	
 
 
-	/// Print the board
+	/// Print the board and the score
 	void print()
 	{
 		for (int i = 0; i < 10; i++) {
@@ -249,7 +258,7 @@ public:
 
 			cout << endl;
 		}
-	
+		cout << "SCORE: " << score;
 	}
 
 
